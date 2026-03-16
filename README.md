@@ -105,9 +105,9 @@
 ---
 
 1. **아이템 정렬 기능 (Sort)**
-    - [ ]  **비교 함수(`compareItemsByPrice`) 작성**
+    - [x]  **비교 함수(`compareItemsByPrice`) 작성**
         - 클래스 외부에 두 아이템의 가격을 비교하는 함수를 만듭니다. (왼쪽 아이템 가격이 더 작으면 `true` 반환)
-    - [ ]  **SortItems 함수 구현**
+    - [x]  **SortItems 함수 구현**
         - 배열의 시작 주소(`pItems_`), 끝 지점(`pItems_ + size_`), 그리고 위에서 만든 비교 함수를 전달하여 **가격순(오름차순)**으로 정렬합니다.
         - C++ 표준 라이브러리인 `std::sort`를 활용합니다.
         - 정렬 기준 정의 : 클래스 외부에 별도로 작성된 비교 함수(`compareItemsByPrice`)를 `std::sort`에 전달합니다.

@@ -46,12 +46,13 @@ public:
 
 	int GetSize() const
 	{
-		std::cout << "인베토리 사용량 : " << size_ << std::endl;
+		std::cout << "인벤토리 사용량 : " << size_ << std::endl;
 		return size_;
 	}
 
 	int GetCapacity() const
 	{
+		std::cout << "인벤토리 크기 : " << capacity_ << std::endl;
 		return capacity_;
 	}
 
@@ -100,6 +101,31 @@ public:
 			//pItems_[i]->PrintInfo();
 		}
 		
+	}
+
+	// 이미 만들어진 객체에 다른 객체의 내용을 덮어쓰기
+	void Assign(const Inventory<T>& other)
+	{
+		if (this == &other)
+		{
+			std::cout << "같은 인벤토리 입니다." << std::endl;
+			return;
+		}
+
+		std::cout << "기존 인벤토리를 비웁니다." << std::endl;
+		delete[] pItems_;
+
+		std::cout << "대입 할 인벤토리의 정보를 가져옵니다." << std::endl;
+		pItems_ = new T[other.capacity_];
+		capacity_ = other.capacity_;
+		size_ = other.size_;
+
+		for (int i = 0; i < size_; ++i)
+		{
+			pItems_[i] = other.pItems_[i];
+		}
+
+		std::cout << "인베토리를 덮어 씌웠습니다." << std::endl;
 	}
 };
 

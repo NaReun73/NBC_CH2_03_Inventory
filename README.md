@@ -88,7 +88,7 @@
         }
         ```
         
-    - [ ]  **Assign(대입) 함수 구현 (**`void Assign(const Inventory<T>& other);`**)**
+    - [x]  **Assign(대입) 함수 구현 (**`void Assign(const Inventory<T>& other);`**)**
         - 이미 만들어진 객체에 다른 객체의 내용을 덮어씁니다.
         - 기존에 가지고 있던 메모리는 `delete[]`로 먼저 비워준 뒤, 새로운 공간을 만들어 복사해야 메모리 누수가 생기지 않습니다.
 

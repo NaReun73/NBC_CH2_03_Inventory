@@ -5,7 +5,9 @@ int main(void)
 {
 	Inventory<Item>* itemInventory = new Inventory<Item>(5);
 
+	std::cout << "-----인벤토리 1-----" << std::endl;
 	itemInventory->AddItem(Item("검", 1000));
+	itemInventory->GetCapacity();
 	itemInventory->GetSize();
 	itemInventory->PrintAllItems();
 
@@ -21,26 +23,41 @@ int main(void)
 	itemInventory->GetSize();
 	itemInventory->PrintAllItems();
 
+
+	std::cout << "-----인벤토리 1을 복사해서 인벤토리 2 생성-----" << std::endl;
 	Inventory<Item>* otheritemInventory = new Inventory<Item>(*itemInventory);
 
+	std::cout << "-----인벤토리 2-----" << std::endl;
 	otheritemInventory->GetCapacity();
 	otheritemInventory->GetSize();
 	otheritemInventory->PrintAllItems();
+	otheritemInventory->RemoveLastItem();
+	otheritemInventory->RemoveLastItem();
+	otheritemInventory->PrintAllItems();
 
-	Inventory<Item>* itemInventory3 = new Inventory<Item>;
-	itemInventory3->GetCapacity();
-	itemInventory3->GetSize();
-	itemInventory3->PrintAllItems();
+	std::cout << "-----인벤토리 1-----" << std::endl;
+	itemInventory->PrintAllItems();
 
-	itemInventory3->Assign(*otheritemInventory);
+	std::cout << "-----인벤토리 1에 인벤토리 1 대입-----" << std::endl;
+	itemInventory->Assign(*itemInventory);
 
-	itemInventory3->GetCapacity();
-	itemInventory3->GetSize();
-	itemInventory3->PrintAllItems();
+	std::cout << "-----인벤토리 1에 인벤토리 2 대입-----" << std::endl;
+	itemInventory->Assign(*otheritemInventory);
+
+	std::cout << "-----인벤토리 1-----" << std::endl;
+	itemInventory->GetCapacity();
+	itemInventory->GetSize();
+	itemInventory->PrintAllItems();
+
+	itemInventory->AddItem(Item("대검", 1500));
+	itemInventory->GetSize();
+	itemInventory->PrintAllItems();
+
+	std::cout << "-----인벤토리 2-----" << std::endl;
+	otheritemInventory->PrintAllItems();
 
 	delete itemInventory;
 	delete otheritemInventory;
-	delete itemInventory3;
 
 	/*
 	Inventory<Item*> itemInventory(5);

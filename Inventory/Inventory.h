@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include <iostream>
+#include <algorithm>
 #include "Item.h"
 
 template <typename T>
@@ -170,5 +171,9 @@ public:
 		pItems_ = newpItems_;
 		capacity_ = newcapacity;
 	}
-};
 
+	void SortItems()
+	{
+		std::sort(pItems_, pItems_ + size_, CompareItemsByPrice);
+	}
+};

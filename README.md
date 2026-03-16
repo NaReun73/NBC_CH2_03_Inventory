@@ -295,3 +295,53 @@ Inventory<Item>* otheritemInventory = new Inventory<Item>(*itemInventory);
 </aside>
 
 </aside>
+
+<aside>
+
+### std::sort()
+
+---
+
+<aside>
+
+`#include <algorithm>` 을 적어주어야 합니다.
+
+sort(start, end) 를 사용하여 범위 안에 있는 인자를 오름차순으로 정렬해줍니다.
+
+- `sort(pItems_, pItems_ + size_);`
+- `sort(v.begin(), v.end());`
+- `sort(v.begin(), v.end(), compare);`    // 사용자 정의 함수
+- `sort(v.begin(), v.end(), greater<자료형>());` // 내름차순(Descending order)
+- `sort(v.begin(), v.end(), less<자료형>());`    // 오름차순(default = Ascending order)
+</aside>
+
+<aside>
+
+`sort(v.begin(), v.end(), compare);` **에서** **compare 부분에 인자를 안 넣어줘도 되는 이유**
+
+`std::sort`가 내부에서 `CompareItemsByPrice(pItems_[0], pItems_[1])`을 **스스로 호출**합니다.
+만약 `CompareItemsByPrice(a, b)`라고 적어버리면, 그 함수를 **지금 당장 실행해서 나온 `true/false` 결과값**을 던져주는 꼴이 되어버려 정렬을 할 수 없게 됩니다.
+
+</aside>
+
+- **SortItems() 코드**
+    
+    ```cpp
+    // Item.h
+    // 클래스 외부에 선언
+    bool CompareItemsByPrice(const Item& a, const Item& b);
+    
+    // Item.cpp
+    bool CompareItemsByPrice(const Item& a, const Item& b)
+    {
+    	return a.GetPrice() < b.GetPrice();
+    }
+    
+    // Inventory.h
+    void SortItems()
+    {
+    	std::sort(pItems_, pItems_ + size_, CompareItemsByPrice);
+    }
+    ```
+    
+</aside>

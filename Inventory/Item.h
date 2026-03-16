@@ -16,3 +16,4 @@ public:
 	void PrintInfo() const;
 };
 
+bool CompareItemsByPrice(const Item& a, const Item& b);

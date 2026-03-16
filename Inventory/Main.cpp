@@ -7,16 +7,16 @@ int main(void)
 	Inventory<Item>* itemInventory = new Inventory<Item>(5);
 
 	std::cout << "-----인벤토리 1-----" << std::endl;
-	itemInventory->AddItem(Item("검", 1000));
+	itemInventory->AddItem(Item("장검", 1000));
 	itemInventory->GetCapacity();
 	itemInventory->GetSize();
 	itemInventory->PrintAllItems();
 
-	itemInventory->AddItem(Item("목검", 100));
-	itemInventory->AddItem(Item("목검", 100));
-	itemInventory->AddItem(Item("목검", 100));
-	itemInventory->AddItem(Item("목검", 100));
-	itemInventory->AddItem(Item("목검", 100));
+	itemInventory->AddItem(Item("귀환서", 3000));
+	itemInventory->AddItem(Item("단검", 500));
+	itemInventory->AddItem(Item("체력포션", 300));
+	itemInventory->AddItem(Item("마나포션", 200));
+	itemInventory->AddItem(Item("귀환서", 3000));
 	itemInventory->GetCapacity();
 	itemInventory->GetSize();
 	itemInventory->PrintAllItems();
@@ -33,8 +33,8 @@ int main(void)
 	otheritemInventory->GetCapacity();
 	otheritemInventory->GetSize();
 	otheritemInventory->PrintAllItems();
-	otheritemInventory->RemoveLastItem();
-	otheritemInventory->RemoveLastItem();
+	//otheritemInventory->RemoveLastItem();
+	//otheritemInventory->RemoveLastItem();
 	otheritemInventory->PrintAllItems();
 
 	std::cout << "-----인벤토리 1-----" << std::endl;
@@ -70,7 +70,14 @@ int main(void)
 	//itemInventory->PrintAllItems();
 
 	itemInventory->Resize(20);
+	itemInventory->AddItem(Item("장검", 1000));
 	itemInventory->GetCapacity();
+	itemInventory->PrintAllItems();
+
+	std::cout << "-----인벤토리 1 가격(오름차순)으로 정렬-----" << std::endl;
+	itemInventory->SortItems();
+
+	std::cout << "-----인벤토리 1-----" << std::endl;
 	itemInventory->PrintAllItems();
 
 	delete itemInventory;

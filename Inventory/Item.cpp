@@ -35,3 +35,8 @@ void Item::PrintInfo() const
 {
 	std::cout << "[이름: " << name_ << ", 가격: " << price_ << "G]" << std::endl;
 }
+
+bool CompareItemsByPrice(const Item& a, const Item& b)
+{
+	return a.GetPrice() < b.GetPrice();
+}

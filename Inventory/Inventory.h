@@ -22,7 +22,7 @@ public:
 
 		//포인터를 담을 수 있는 배열 공간 할당(힙 메모리)
 		pItems_ = new T[capacity_];
-		std::cout << "인벤토리 총 크기 : " << capacity_ << std::endl;
+		std::cout << "인벤토리 크기 : " << capacity_ << std::endl;
 	}
 
 	Inventory(const Inventory<T>& other)
@@ -67,8 +67,11 @@ public:
 		else
 		{
 			std::cout << "인벤토리가 꽉 찼습니다!" << std::endl;
+			std::cout << "인벤토리를 2배 늘립니다!" << std::endl;
+			Resize(capacity_ * 2);
+			pItems_[size_] = item;
+			size_++;
 		}
-		
 	}
 
 	// 마지막 아이템 버리기
@@ -125,7 +128,47 @@ public:
 			pItems_[i] = other.pItems_[i];
 		}
 
-		std::cout << "인베토리를 덮어 씌웠습니다." << std::endl;
+		std::cout << "인벤토리를 덮어 씌웠습니다." << std::endl;
+	}
+
+	// 인벤토리 크기 재설정
+	void Resize(int newcapacity)
+	{
+		if (newcapacity == capacity_)
+		{
+			std::cout << "현재 크기랑 같습니다." << std::endl;
+			return;
+		}
+
+		T* newpItems_ = new T[newcapacity];
+
+		if (newcapacity < size_)
+		{
+			std::cout << "설정한 크기값이 현재 사용량보다 작아서 일부 아이템이 사라질수도 있습니다." << std::endl;
+			std::cout << "진행하겠습니까? 1.확인 2.취소" << std::endl;
+			
+			int num = 0;
+			std::cin >> num;
+
+			if (num == 1)
+			{
+				size_ = newcapacity;
+			}
+			else
+			{
+				return;
+			}
+		}
+
+		for (int i = 0; i < size_; ++i)
+		{
+			newpItems_[i] = pItems_[i];
+		}
+
+		delete[] pItems_;
+
+		pItems_ = newpItems_;
+		capacity_ = newcapacity;
 	}
 };
 

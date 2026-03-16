@@ -95,10 +95,10 @@
 ---
 
 1. **인벤토리 자동 확장 (Resize)**
-    - [ ]  **Resize 멤버 함수 구현**
+    - [x]  **Resize 멤버 함수 구현**
         - 새로운 크기(`newCapacity`)만큼의 새로운 메모리 공간을 할당합니다.
         - 기존에 들어있던 아이템들을 새 공간으로 모두 이사시킨 뒤, 낡은 메모리는 해제합니다.
-    - [ ]  **AddItem 기능 업그레이드**
+    - [x]  **AddItem 기능 업그레이드**
         - 아이템을 넣으려는데 인벤토리가 꽉 찼다면?
         - 프로그램을 멈추지 말고 `Resize`를 호출하여 **기존 용량의 2배**로 공간을 늘린 후 아이템을 추가합니다.
 
@@ -119,4 +119,179 @@
             }
             ```
             
+</aside>
+
+
+
+
+
+## 구현 중 발생한 문제점과 해결, 궁금한 점
+
+<aside>
+
+### 복사 생성자
+
+---
+
+**처음으로 복사 생성자를 호출할 때**
+
+```cpp
+Inventory<Item>* otheritemInventory(itemInventory);
+//객체를 복사한 것이 아니라, 포인터(주소값)만 복사한 것
+```
+
+위 코드를 사용했을 때 복사 생성자가 실행되지 않았습니다.
+
+포인터 변수끼리 주소값을 주고받는 것은 C++ 기본 자료형(int, float 등)의 복사와 같아서 클래스 내부의 복사 생성자를 건드리지 않습니다.
+
+**수정 후**
+
+```cpp
+Inventory<Item>* otheritemInventory = new Inventory<Item>(*itemInventory);
+// 실제 객체를 복사하여 새로운 힙메모리에 만듭니다.
+```
+
+`*itemInventory` 를 통해서 실제 객체에 접근합니다.
+
+`new` 가 실행되면서 새로운 메모리 공간을 확보합니다.
+
+인자로 객체가 넘어왔으므로, 복사 생성자가 실행됩니다.
+
+</aside>
+
+<aside>
+
+### Assign() 함수 (대입 함수)
+
+---
+
+기존 인벤토리를 쓰기 때문에 delete[] 를 사용하여 공간을 비워주고 새로운 공간을 만들어줘야 합니다.
+
+여기서 기존 인벤토리의 `capacity_` 와 `size_` 는 그대로 남아있기 때문에 
+
+대입하는 인벤토리의 `capacity_` 와 `size_`를 따로 대입해줍니다. 
+
+그 다음 기존 인벤토리에 다른 인벤토리의 정보를 대입합니다.
+
+- **Assign() 코드**
+    
+    ```cpp
+    // 이미 만들어진 객체에 다른 객체의 내용을 덮어쓰기
+    void Assign(const Inventory<T>& other)
+    {
+    	if (this == &other)
+    	{
+    		std::cout << "같은 인벤토리 입니다." << std::endl;
+    		return;
+    	}
+    
+    	std::cout << "기존 인벤토리를 비웁니다." << std::endl;
+    	delete[] pItems_;
+    
+    	std::cout << "대입 할 인벤토리의 정보를 가져옵니다." << std::endl;
+    	pItems_ = new T[other.capacity_];
+    	capacity_ = other.capacity_;
+    	size_ = other.size_;
+    
+    	for (int i = 0; i < size_; ++i)
+    	{
+    		pItems_[i] = other.pItems_[i];
+    	}
+    
+    	std::cout << "인베토리를 덮어 씌웠습니다." << std::endl;
+    }
+    ```
+    
+</aside>
+
+<aside>
+
+### Resize() 함수 (크기 재설정 함수)
+
+---
+
+<aside>
+
+**기존 인벤토리의 `capacity_` 의 크기를 늘립니다.**
+
+- 새로운 크기(`newCapacity`)만큼의 새로운 메모리 공간을 할당합니다.
+    - 새로운 크기가 같으면 함수를 끝냅니다.
+    - 새로운 크기가 현재 사용량보다 작으면 경고문을 출력하여 진행할지 취소할지 정합니다.
+    - 진행할 시 `size_ = newcapacity` 를 해서 나머지는 버려집니다.
+- **코드**
+    
+    ```cpp
+    // 인벤토리 크기 재설정
+    void Resize(int newcapacity)
+    {
+    	if (newcapacity == capacity_)
+    	{
+    		std::cout << "현재 크기랑 같습니다." << std::endl;
+    		return;
+    	}
+    
+    	T* newpItems_ = new T[newcapacity];
+    
+    	if (newcapacity < size_)
+    	{
+    		std::cout << "설정한 크기값이 현재 사용량보다 작아서 일부 아이템이 사라질수도 있습니다." << std::endl;
+    		std::cout << "진행하겠습니까? 1.확인 2.취소" << std::endl;
+    		
+    		int num = 0;
+    		std::cin >> num;
+    		
+    		if (num == 1)
+    		{
+    			size_ = newcapacity;
+    		}
+    		else
+    		{
+    			return;
+    		}
+    	}
+    
+    	for (int i = 0; i < size_; ++i)
+    	{
+    		newpItems_[i] = pItems_[i];
+    	}
+    
+    	delete[] pItems_;
+    
+    	pItems_ = newpItems_;
+    	capacity_ = newcapacity;
+    }
+    ```
+    
+</aside>
+
+<aside>
+
+**`AddItem()` 기능 업그레이드**
+
+아이템을 넣을 공간이 없을 때 프로그램을 멈추지 않고 `Resize()` 함수를 호출하여 기존 크기를 2배로 늘리고 아이템을 다시 넣습니다.
+
+- **AddItem() 코드**
+    
+    ```cpp
+    // 인벤토리에 아이템 추가
+    void AddItem(const T& item)
+    {
+    	if (size_ < capacity_)
+    	{
+    		pItems_[size_] = item;
+    		size_++;
+    	}
+    	else
+    	{
+    		std::cout << "인벤토리가 꽉 찼습니다!" << std::endl;
+    		std::cout << "인벤토리를 2배 늘립니다!" << std::endl;
+    		Resize(capacity_ * 2);
+    		pItems_[size_] = item;
+    		size_++;
+    	}
+    }
+    ```
+    
+</aside>
+
 </aside>

@@ -25,6 +25,19 @@ public:
 		std::cout << "인벤토리 총 크기 : " << capacity_ << std::endl;
 	}
 
+	Inventory(const Inventory<T>& other)
+	{
+		capacity_ = other.capacity_;
+		size_ = other.size_;
+		pItems_ = new T[capacity_];
+		for (int i = 0; i < size_; ++i)
+		{
+			pItems_[i] = other.pItems_[i];
+		}
+
+		std::cout << "인벤토리 복사 완료" << std::endl;
+	}
+
 	~Inventory()
 	{
 		delete[] pItems_;
@@ -64,7 +77,8 @@ public:
 		{
 			std::cout << "마지막 아이템을 버립니다." << std::endl;
 			size_--;
-			pItems_[size_]->Clear();
+			pItems_[size_].Clear();
+			//pItems_[size_]->Clear();
 		}
 		else
 		{
@@ -82,8 +96,8 @@ public:
 
 		for (int i = 0; i < size_; ++i)
 		{
-			// pItems_[i]는 포인트배열 ->연산자로 접근
-			pItems_[i]->PrintInfo();
+			pItems_[i].PrintInfo();
+			//pItems_[i]->PrintInfo();
 		}
 		
 	}
